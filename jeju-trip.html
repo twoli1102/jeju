@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>濟州島旅遊小幫手 11/22–11/27</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #F4F1EC;
+  --white:   #FFFFFF;
+  --ink:     #1C1917;
+  --muted:   #78726A;
+  --border:  #E2D9CE;
+  --teal:    #2D6A5E;
+  --teal-lt: #D6EDE9;
+  --gold:    #C8893A;
+  --gold-lt: #FDF0DC;
+  --red:     #C0392B;
+  --red-lt:  #FDECEA;
+  --blue:    #2D4E6A;
+  --blue-lt: #DCE8F2;
+  --purple:  #5A3D6B;
+  --purple-lt:#ECDFF5;
+  --green:   #2D6A3F;
+  --green-lt:#D6EDDF;
+  --tab-h:   56px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+body {
+  font-family: -apple-system, 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: calc(var(--tab-h) + var(--safe-bottom) + 8px);
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  background: var(--teal);
+  color: #fff;
+  padding: 14px 18px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar-title { font-size: 16px; font-weight: 700; }
+.topbar-sub   { font-size: 11px; opacity: 0.7; margin-top: 1px; }
+.topbar-date  { font-size: 12px; background: rgba(255,255,255,0.15); border-radius: 6px; padding: 4px 9px; text-align: right; }
+
+/* ── TAB BAR ── */
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: var(--tab-h);
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 200;
+  padding-bottom: var(--safe-bottom);
+}
+.tab-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 10px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s;
+  padding: 0;
+}
+.tab-btn.active { color: var(--teal); }
+.tab-btn svg { width: 22px; height: 22px; }
+
+/* ── PAGES ── */
+.page { display: none; padding: 14px 14px 0; }
+.page.active { display: block; }
+
+/* ── SECTION HEADER ── */
+.sec-hdr {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--muted);
+  margin: 18px 0 10px;
+}
+.sec-hdr:first-child { margin-top: 0; }
+
+/* ── CARD ── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+/* ── HOTEL CARD ── */
+.hotel-card {
+  background: var(--teal);
+  color: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.hotel-icon { font-size: 28px; flex-shrink: 0; }
+.hotel-info {}
+.hotel-name { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.hotel-detail { font-size: 12px; opacity: 0.8; line-height: 1.5; }
+.hotel-map-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.2); color: #fff; text-decoration: none;
+  font-size: 11px; padding: 4px 9px; border-radius: 20px; margin-top: 6px;
+}
+
+/* ── ITINERARY ── */
+.day-tabs {
+  display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto;
+  scrollbar-width: none; padding-bottom: 2px;
+}
+.day-tabs::-webkit-scrollbar { display: none; }
+.day-tab {
+  flex-shrink: 0;
+  padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+  font-size: 12px; font-weight: 600; cursor: pointer; background: var(--white);
+  color: var(--muted); transition: all 0.15s;
+}
+.day-tab.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+
+.day-content { display: none; }
+.day-content.active { display: block; }
+
+.stop {
+  display: flex; gap: 10px; margin-bottom: 14px; position: relative;
+}
+.stop::before {
+  content: '';
+  position: absolute; left: 19px; top: 38px; bottom: -14px; width: 2px;
+  background: var(--border);
+}
+.stop:last-child::before { display: none; }
+.stop-dot {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--teal-lt); color: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0; z-index: 1;
+}
+.stop-body { flex: 1; padding-top: 2px; }
+.stop-time { font-size: 10px; color: var(--gold); font-weight: 700; margin-bottom: 2px; }
+.stop-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; line-height: 1.3; }
+.stop-note { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 4px; }
+.stop-tag {
+  display: inline-block; font-size: 10px; padding: 2px 7px;
+  border-radius: 10px; margin-right: 4px; margin-bottom: 2px; font-weight: 600;
+}
+.t-food    { background: #FDF0DC; color: var(--gold); }
+.t-sight   { background: var(--teal-lt); color: var(--teal); }
+.t-cafe    { background: var(--purple-lt); color: var(--purple); }
+.t-market  { background: var(--blue-lt); color: var(--blue); }
+.t-todo    { background: var(--red-lt); color: var(--red); }
+.stop-map  {
+  font-size: 11px; color: var(--teal); text-decoration: none; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 3px; margin-top: 2px;
+}
+
+/* ── WEATHER ── */
+.weather-card {
+  background: linear-gradient(135deg, var(--blue) 0%, #3D6880 100%);
+  color: #fff; border-radius: 12px; padding: 16px; margin-bottom: 10px;
+}
+.weather-main { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.weather-icon { font-size: 48px; }
+.weather-temp { font-size: 42px; font-weight: 300; line-height: 1; }
+.weather-temp sup { font-size: 18px; }
+.weather-info { flex: 1; }
+.weather-desc { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.weather-loc  { font-size: 12px; opacity: 0.7; }
+.weather-row  { display: flex; gap: 0; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; }
+.weather-stat { flex: 1; text-align: center; }
+.weather-stat-val { font-size: 15px; font-weight: 700; }
+.weather-stat-lbl { font-size: 10px; opacity: 0.7; margin-top: 2px; }
+.weather-time { font-size: 11px; opacity: 0.5; margin-top: 8px; text-align: right; }
+.weather-error { text-align: center; padding: 10px; font-size: 13px; opacity: 0.8; }
+.weather-loading { text-align: center; padding: 20px; font-size: 13px; opacity: 0.6; }
+
+/* ── EXPENSE ── */
+.expense-summary {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-bottom: 12px;
+}
+.summary-box {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px;
+}
+.summary-box.full { grid-column: 1 / -1; }
+.summary-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.summary-val { font-size: 20px; font-weight: 700; color: var(--teal); }
+.summary-val span { font-size: 12px; color: var(--muted); font-weight: 400; }
+.summary-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.rate-row {
+  display: flex; align-items: center; gap: 8px; font-size: 12px;
+  color: var(--muted); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);
+}
+.rate-input {
+  width: 70px; border: 1px solid var(--border); border-radius: 6px;
+  padding: 4px 6px; font-size: 12px; font-family: inherit; background: var(--bg); color: var(--ink);
+}
+
+.member-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--teal-lt); color: var(--teal); font-size: 12px; font-weight: 600;
+  padding: 5px 6px 5px 10px; border-radius: 20px;
+}
+.member-chip button {
+  background: none; border: none; color: var(--teal); font-size: 14px;
+  cursor: pointer; line-height: 1; padding: 2px;
+}
+
+.cat-bars { margin-bottom: 2px; }
+.cat-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.cat-label { font-size: 11px; width: 36px; color: var(--muted); flex-shrink: 0; }
+.cat-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.cat-bar { height: 100%; border-radius: 3px; transition: width 0.3s; }
+.cat-amt { font-size: 11px; font-weight: 600; width: 76px; text-align: right; flex-shrink: 0; }
+.b-food    { background: var(--gold); }
+.b-trans   { background: var(--blue); }
+.b-shop    { background: var(--purple); }
+.b-hotel   { background: var(--teal); }
+.b-ticket  { background: var(--red); }
+
+.add-expense { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.add-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+.form-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.form-input {
+  flex: 1; border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 11px; font-size: 14px; background: var(--bg);
+  color: var(--ink); font-family: inherit; outline: none;
+}
+.form-input:focus { border-color: var(--teal); }
+.form-select {
+  flex: 1; border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 11px; font-size: 13px; background: var(--bg);
+  color: var(--ink); font-family: inherit; outline: none;
+  appearance: none;
+}
+.add-btn {
+  width: 100%; background: var(--teal); color: #fff; border: none;
+  border-radius: 8px; padding: 11px; font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: background 0.15s;
+}
+.add-btn:hover { background: #1e5045; }
+
+.exp-list { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+.exp-list-hdr {
+  padding: 11px 14px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
+  border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;
+  align-items: center;
+}
+.clear-btn {
+  font-size: 11px; color: var(--red); background: none; border: none;
+  cursor: pointer; font-family: inherit; font-weight: 600;
+}
+.exp-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; border-bottom: 1px solid var(--border);
+}
+.exp-item:last-child { border-bottom: none; }
+.exp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.exp-name { flex: 1; font-size: 13px; }
+.exp-cat  { font-size: 10px; color: var(--muted); }
+.exp-amt  { font-size: 14px; font-weight: 700; color: var(--ink); text-align: right; }
+.exp-amt-sub { font-size: 10px; color: var(--muted); font-weight: 400; }
+.exp-del  { background: none; border: none; color: var(--border); font-size: 16px; cursor: pointer; padding: 0 4px; }
+.exp-del:hover { color: var(--red); }
+.exp-empty { padding: 20px; text-align: center; font-size: 13px; color: var(--muted); }
+
+/* ── CHECKLIST ── */
+.cl-section { margin-bottom: 14px; }
+.cl-sec-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--muted); margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cl-progress {
+  font-size: 11px; color: var(--teal); font-weight: 700;
+}
+.cl-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px; background: var(--white);
+  border: 1px solid var(--border); border-radius: 10px;
+  margin-bottom: 6px; cursor: pointer; transition: opacity 0.15s;
+}
+.cl-item.done { opacity: 0.5; }
+.cl-cb {
+  width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; transition: all 0.15s; margin-top: 1px;
+}
+.cl-item.done .cl-cb { background: var(--teal); border-color: var(--teal); color: #fff; }
+.cl-text { flex: 1; }
+.cl-label { font-size: 13px; font-weight: 500; line-height: 1.4; }
+.cl-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.cl-item.done .cl-label { text-decoration: line-through; }
+
+.add-cl-row { display: flex; gap: 8px; margin-top: 10px; }
+.add-cl-input {
+  flex: 1; border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 12px; font-size: 13px; background: var(--bg);
+  color: var(--ink); font-family: inherit; outline: none;
+}
+.add-cl-input:focus { border-color: var(--teal); }
+.add-cl-btn {
+  background: var(--teal); color: #fff; border: none; border-radius: 8px;
+  padding: 10px 16px; font-size: 20px; cursor: pointer; line-height: 1;
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-title">🏝️ 濟州島旅遊小幫手</div>
+    <div class="topbar-sub">Moments Inhado → YAKMAEUL・11/22–11/27</div>
+  </div>
+  <div class="topbar-date" id="topbar-date">
+    <div id="today-label" style="font-size:11px;opacity:0.8;">今天</div>
+    <div id="today-date" style="font-size:13px;font-weight:700;">--</div>
+  </div>
+</div>
+
+<!-- PAGE: 行程 -->
+<div class="page active" id="page-itinerary">
+
+  <div class="sec-hdr" style="margin-top:14px;">✈️ 航班資訊</div>
+  <div class="card" style="padding:12px 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:4px;">去程 11/22（日）IT654</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">TPE 06:40 → CJU 09:50（一航廈）</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:4px;">回程 11/27（五）IT655</div>
+    <div style="font-size:12px;color:var(--muted);">CJU 11:45 → TPE 12:55</div>
+  </div>
+
+  <div class="sec-hdr">🏨 住宿飯店</div>
+  <div class="hotel-card">
+    <div class="hotel-icon">🏠</div>
+    <div class="hotel-info">
+      <div class="hotel-name">Moments Inhado</div>
+      <div class="hotel-detail">
+        🗓 入住 11/22（日）・退房 11/24（二）・共 2 晚<br>
+        💰 NT$19,930
+      </div>
+      <a class="hotel-map-btn" href="https://maps.google.com/?q=Moments+Inhado+Jeju" target="_blank">📍 Google Maps</a>
+    </div>
+  </div>
+  <div class="hotel-card">
+    <div class="hotel-icon">🏠</div>
+    <div class="hotel-info">
+      <div class="hotel-name">YAKMAEUL</div>
+      <div class="hotel-detail">
+        🗓 入住 11/24（二）・退房 11/27（五）・共 3 晚<br>
+        💰 NT$12,680
+      </div>
+      <a class="hotel-map-btn" href="https://maps.google.com/?q=YAKMAEUL+Jeju" target="_blank">📍 Google Maps</a>
+    </div>
+  </div>
+
+  <div class="sec-hdr">🗓 行程</div>
+  <div class="day-tabs">
+    <div class="day-tab active" onclick="switchDay(0)">11/22 Day1</div>
+    <div class="day-tab" onclick="switchDay(1)">11/23 Day2</div>
+    <div class="day-tab" onclick="switchDay(2)">11/24 Day3</div>
+    <div class="day-tab" onclick="switchDay(3)">11/25 Day4</div>
+    <div class="day-tab" onclick="switchDay(4)">11/26 Day5</div>
+    <div class="day-tab" onclick="switchDay(5)">11/27 返程</div>
+  </div>
+
+  <!-- Day 0 -->
+  <div class="day-content active" id="day-0">
+    <div class="stop">
+      <div class="stop-dot">✈️</div>
+      <div class="stop-body">
+        <div class="stop-time">06:40</div>
+        <div class="stop-name">桃園機場出發 TPE → CJU（IT654）</div>
+        <div class="stop-note">一航廈起飛，飛行時間約 2 小時 10 分</div>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🛬</div>
+      <div class="stop-body">
+        <div class="stop-time">09:50</div>
+        <div class="stop-name">抵達濟州機場 CJU</div>
+        <div class="stop-note">入境後辦理網路與交通資訊</div>
+        <a class="stop-map" href="https://maps.google.com/?q=Jeju+International+Airport" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🚗</div>
+      <div class="stop-body">
+        <div class="stop-name">租車取車</div>
+        <div class="stop-note">取車後開始環島行程</div>
+        <span class="stop-tag t-sight">租車</span>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🛒</div>
+      <div class="stop-body">
+        <div class="stop-name">東門市場</div>
+        <div class="stop-note">濟州市區傳統市場，邊逛邊吃</div>
+        <span class="stop-tag t-market">市場</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Dongmun+Market+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🍢</div>
+      <div class="stop-body">
+        <div class="stop-name">七星街</div>
+        <div class="stop-note">東門市場周邊商圈，順路逛</div>
+        <span class="stop-tag t-sight">景點</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Chilseongro+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🛍️</div>
+      <div class="stop-body">
+        <div class="stop-name">蓮洞商圈</div>
+        <div class="stop-note">逛街購物區</div>
+        <span class="stop-tag t-market">市場</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Yeondong+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🏬</div>
+      <div class="stop-body">
+        <div class="stop-name">中央地下街</div>
+        <div class="stop-note">地下商店街</div>
+        <span class="stop-tag t-market">市場</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Jungang+Underground+Shopping+Center+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🍙</div>
+      <div class="stop-body">
+        <div class="stop-time">營業到 15:30</div>
+        <div class="stop-name">海女飯捲</div>
+        <div class="stop-note">⚠️ 15:30 打烊，需先吃</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Haenyeo+Gimbap+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🥖</div>
+      <div class="stop-body">
+        <div class="stop-time">營業到 22:00</div>
+        <div class="stop-name">大蒜麵包</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Garlic+Bread+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🥯</div>
+      <div class="stop-body">
+        <div class="stop-time">營業到 18:00</div>
+        <div class="stop-name">London Bagel</div>
+        <div class="stop-note">⚠️ 18:00 打烊</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=London+Bagel+Museum+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🦘</div>
+      <div class="stop-body">
+        <div class="stop-time">營業到 18:00</div>
+        <div class="stop-name">object 矮袋鼠</div>
+        <div class="stop-note">⚠️ 18:00 打烊</div>
+        <span class="stop-tag t-sight">景點</span>
+        <a class="stop-map" href="https://maps.google.com/?q=object+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🏠</div>
+      <div class="stop-body">
+        <div class="stop-name">Check in Moments Inhado</div>
+        <div class="stop-note">放行李、稍作休息</div>
+        <a class="stop-map" href="https://maps.google.com/?q=Moments+Inhado+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🍽️</div>
+      <div class="stop-body">
+        <div class="stop-name">晚餐：明珍鮑魚</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Myeongjin+Jeonbok+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 1 -->
+  <div class="day-content" id="day-1">
+    <div class="stop">
+      <div class="stop-dot">☕</div>
+      <div class="stop-body">
+        <div class="stop-time">10:00 開始營業</div>
+        <div class="stop-name">早餐：orrn 咖啡廳</div>
+        <div class="stop-note">10 點開門，與牛島出發時間接近，視渡輪班次調整</div>
+        <span class="stop-tag t-cafe">咖啡廳</span>
+        <span class="stop-tag t-todo">待確認</span>
+        <a class="stop-map" href="https://maps.google.com/?q=orrn+cafe+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🚢</div>
+      <div class="stop-body">
+        <div class="stop-time">10:00</div>
+        <div class="stop-name">牛島</div>
+        <div class="stop-note">招牌花生冰 Udo</div>
+        <span class="stop-tag t-sight">景點</span>
+        <span class="stop-tag t-cafe">甜點</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Udo+Island+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🍽️</div>
+      <div class="stop-body">
+        <div class="stop-name">午餐：牛島解決</div>
+        <span class="stop-tag t-food">美食</span>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🍜</div>
+      <div class="stop-body">
+        <div class="stop-time">營業到 21:00</div>
+        <div class="stop-name">晚餐：海螺刀削麵</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Jeju+whelk+kalguksu" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🍗</div>
+      <div class="stop-body">
+        <div class="stop-name">橋村炸雞 城山日出峰店</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Kyochon+Chicken+Seongsan+Ilchulbong" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 2 -->
+  <div class="day-content" id="day-2">
+    <div class="stop">
+      <div class="stop-dot">🧳</div>
+      <div class="stop-body">
+        <div class="stop-name">退房 Moments Inhado</div>
+        <a class="stop-map" href="https://maps.google.com/?q=Moments+Inhado+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🌅</div>
+      <div class="stop-body">
+        <div class="stop-name">城山日出峰</div>
+        <span class="stop-tag t-sight">景點</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Seongsan+Ilchulbong" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🏞️</div>
+      <div class="stop-body">
+        <div class="stop-name">涉地可支</div>
+        <span class="stop-tag t-sight">景點</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Seopjikoji+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🛒</div>
+      <div class="stop-body">
+        <div class="stop-name">午餐：偶來市場</div>
+        <span class="stop-tag t-food">美食</span>
+        <span class="stop-tag t-market">市場</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Seogwipo+Olle+Market" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">💦</div>
+      <div class="stop-body">
+        <div class="stop-name">正房瀑布</div>
+        <span class="stop-tag t-sight">景點</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Jeongbang+Waterfall+Seogwipo" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🌊</div>
+      <div class="stop-body">
+        <div class="stop-name">大浦海岸柱狀節理</div>
+        <span class="stop-tag t-sight">景點</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Daepo+Jusangjeolli+Cliff" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🍖</div>
+      <div class="stop-body">
+        <div class="stop-time">營業到 22:30</div>
+        <div class="stop-name">晚餐：donbellong 烤豬肉</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Donbellong+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🏠</div>
+      <div class="stop-body">
+        <div class="stop-name">入住 YAKMAEUL</div>
+        <div class="stop-note">11/24–27 共 3 晚，視位置與入住時間調整</div>
+        <a class="stop-map" href="https://maps.google.com/?q=YAKMAEUL+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 3 -->
+  <div class="day-content" id="day-3">
+    <div class="stop">
+      <div class="stop-dot">🌺</div>
+      <div class="stop-body">
+        <div class="stop-name">山茶花之丘</div>
+        <span class="stop-tag t-sight">景點</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Camellia+Hill+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🛍️</div>
+      <div class="stop-body">
+        <div class="stop-name">神話 outlet</div>
+        <span class="stop-tag t-market">市場</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Jeju+Shinhwa+World+Outlet" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🍲</div>
+      <div class="stop-body">
+        <div class="stop-name">午餐：三姓穴海鮮湯</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Samseonghyeol+seafood+soup+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">☕</div>
+      <div class="stop-body">
+        <div class="stop-name">Haejigae 咖啡廳</div>
+        <span class="stop-tag t-cafe">咖啡廳</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Haejigae+cafe+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🥩</div>
+      <div class="stop-body">
+        <div class="stop-name">晚餐：熟成到黑豬肉</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Jeju+black+pork+aged" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🍗</div>
+      <div class="stop-body">
+        <div class="stop-name">BHC 炸雞 新濟州店</div>
+        <div class="stop-note">有濟州島限定口味</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=BHC+Chicken+New+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 4 -->
+  <div class="day-content" id="day-4">
+    <div class="stop">
+      <div class="stop-dot">🍜</div>
+      <div class="stop-body">
+        <div class="stop-name">早餐：noraba 海鮮拉麵</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Noraba+seafood+ramen+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">☕</div>
+      <div class="stop-body">
+        <div class="stop-name">咖啡廳</div>
+        <div class="stop-note">店家尚未決定</div>
+        <span class="stop-tag t-cafe">咖啡廳</span>
+        <span class="stop-tag t-todo">待確認</span>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🌈</div>
+      <div class="stop-body">
+        <div class="stop-name">彩虹海岸道路</div>
+        <span class="stop-tag t-sight">景點</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Rainbow+Coastal+Road+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🎁</div>
+      <div class="stop-body">
+        <div class="stop-name">my jejugift</div>
+        <div class="stop-note">伴手禮</div>
+        <span class="stop-tag t-market">市場</span>
+        <a class="stop-map" href="https://maps.google.com/?q=my+jejugift+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🐟</div>
+      <div class="stop-body">
+        <div class="stop-name">午餐：濟州帶魚忠旼政</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Jeju+hairtail+Chungminjeong" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🛍️</div>
+      <div class="stop-body">
+        <div class="stop-name">逛新羅免稅店</div>
+        <div class="stop-note">需帶護照與登機資訊</div>
+        <span class="stop-tag t-market">市場</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Shilla+Duty+Free+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🥩</div>
+      <div class="stop-body">
+        <div class="stop-name">晚餐：明浩蒜農烤韓牛</div>
+        <div class="stop-note">最後一晚</div>
+        <span class="stop-tag t-food">美食</span>
+        <a class="stop-map" href="https://maps.google.com/?q=Myeongho+garlic+farm+Korean+beef+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 5 -->
+  <div class="day-content" id="day-5">
+    <div class="stop">
+      <div class="stop-dot">🧳</div>
+      <div class="stop-body">
+        <div class="stop-name">退房 YAKMAEUL</div>
+        <a class="stop-map" href="https://maps.google.com/?q=YAKMAEUL+Jeju" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🚗</div>
+      <div class="stop-body">
+        <div class="stop-name">還車</div>
+        <div class="stop-note">預留還車與接駁時間，再前往機場</div>
+        <span class="stop-tag t-sight">租車</span>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">✈️</div>
+      <div class="stop-body">
+        <div class="stop-time">11:45 起飛</div>
+        <div class="stop-name">濟州機場出發 CJU → TPE（IT655）</div>
+        <div class="stop-note">建議提前 2 小時抵達機場</div>
+        <a class="stop-map" href="https://maps.google.com/?q=Jeju+International+Airport" target="_blank">📍 地圖</a>
+      </div>
+    </div>
+    <div class="stop">
+      <div class="stop-dot">🛬</div>
+      <div class="stop-body">
+        <div class="stop-time">12:55</div>
+        <div class="stop-name">抵達桃園機場 TPE</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PAGE: 天氣 -->
+<div class="page" id="page-weather">
+  <div class="sec-hdr" style="margin-top:14px;">🌤 濟州島即時天氣</div>
+  <div id="weather-container">
+    <div class="weather-card">
+      <div class="weather-loading">⏳ 載入天氣資料中…</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:0;">
+    <div class="sec-hdr" style="margin-top:0;">📅 11 月濟州天氣特徵</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8;">
+      🍂 11 月是秋末初冬，早晚偏涼<br>
+      🌡️ 白天約 12–17°C，早晚 5–10°C<br>
+      💨 沿海風大，體感溫度更低，建議帶保暖外套、圍巾<br>
+      ☔ 偶有陣雨，建議帶輕便雨具<br>
+      🌅 日落較早，約下午 5 點半左右
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: 記帳 -->
+<div class="page" id="page-expense">
+  <div class="sec-hdr" style="margin-top:14px;">💰 旅費記帳</div>
+
+  <!-- 總覽 -->
+  <div class="expense-summary">
+    <div class="summary-box full">
+      <div class="summary-label">所有人共同花費</div>
+      <div class="summary-val" id="total-twd">NT$0</div>
+      <div class="summary-sub" id="total-krw">₩0</div>
+      <div class="rate-row">
+        匯率設定：1 台幣 =
+        <input class="rate-input" id="rate-input" type="number" step="0.1" value="43.5" onchange="updateRate()">
+        韓元
+      </div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-label">筆數</div>
+      <div class="summary-val" id="total-count" style="font-size:18px;">0 <span>筆</span></div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-label">同行人數</div>
+      <div class="summary-val" id="traveler-count-display" style="font-size:18px;">0 <span>人</span></div>
+    </div>
+  </div>
+
+  <!-- 各類支出（統一換算成台幣比較） -->
+  <div class="card" style="padding:12px 14px;">
+    <div class="sec-hdr" style="margin-top:0;margin-bottom:8px;">各類支出（換算台幣）</div>
+    <div class="cat-bars">
+      <div class="cat-row"><span class="cat-label">餐飲</span><div class="cat-bar-wrap"><div class="cat-bar b-food" id="bar-food" style="width:0%"></div></div><span class="cat-amt" id="amt-food">NT$0</span></div>
+      <div class="cat-row"><span class="cat-label">交通</span><div class="cat-bar-wrap"><div class="cat-bar b-trans" id="bar-trans" style="width:0%"></div></div><span class="cat-amt" id="amt-trans">NT$0</span></div>
+      <div class="cat-row"><span class="cat-label">購物</span><div class="cat-bar-wrap"><div class="cat-bar b-shop" id="bar-shop" style="width:0%"></div></div><span class="cat-amt" id="amt-shop">NT$0</span></div>
+      <div class="cat-row"><span class="cat-label">住宿</span><div class="cat-bar-wrap"><div class="cat-bar b-hotel" id="bar-hotel" style="width:0%"></div></div><span class="cat-amt" id="amt-hotel">NT$0</span></div>
+      <div class="cat-row"><span class="cat-label">門票</span><div class="cat-bar-wrap"><div class="cat-bar b-ticket" id="bar-ticket" style="width:0%"></div></div><span class="cat-amt" id="amt-ticket">NT$0</span></div>
+    </div>
+  </div>
+
+  <!-- 各人花費 -->
+  <div class="card" style="padding:12px 14px;">
+    <div class="sec-hdr" style="margin-top:0;margin-bottom:8px;">各人花費（換算台幣）</div>
+    <div id="person-bars"></div>
+  </div>
+
+  <!-- 分帳試算 -->
+  <div class="card" style="padding:12px 14px;margin-bottom:10px;">
+    <div class="sec-hdr" style="margin-top:0;margin-bottom:8px;">⚖️ 分帳試算</div>
+    <div id="split-result" style="font-size:13px;color:var(--muted);line-height:1.8;">記帳後自動計算誰欠誰多少</div>
+  </div>
+
+  <!-- 同行成員 -->
+  <div class="card" style="padding:12px 14px;">
+    <div class="sec-hdr" style="margin-top:0;margin-bottom:8px;">👥 同行成員</div>
+    <div id="member-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
+    <div class="form-row" style="margin-bottom:0;">
+      <input class="form-input" id="member-input" type="text" placeholder="新增成員姓名" onkeydown="if(event.key==='Enter')addMember()">
+      <button class="add-btn" style="flex:0 0 64px;" onclick="addMember()">新增</button>
+    </div>
+  </div>
+
+  <!-- 新增支出 -->
+  <div class="add-expense">
+    <div class="add-title">➕ 新增支出</div>
+    <div class="form-row">
+      <select class="form-select" id="exp-person"></select>
+      <select class="form-select" id="exp-cat">
+        <option value="food">🍜 餐飲</option>
+        <option value="trans">🚗 交通</option>
+        <option value="shop">🛍️ 購物</option>
+        <option value="hotel">🏨 住宿</option>
+        <option value="ticket">🎟️ 門票</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <input class="form-input" id="exp-name" type="text" placeholder="名稱（如：午餐、計程車）">
+    </div>
+    <div class="form-row">
+      <input class="form-input" id="exp-amt" type="number" placeholder="金額" inputmode="numeric">
+      <select class="form-select" id="exp-currency" style="flex:0 0 90px;">
+        <option value="KRW">₩ 韓元</option>
+        <option value="TWD">NT$ 台幣</option>
+      </select>
+    </div>
+    <button class="add-btn" id="add-btn" onclick="addExpense()">記帳</button>
+  </div>
+
+  <!-- 明細 -->
+  <div class="exp-list">
+    <div class="exp-list-hdr">
+      <span>共同明細記錄</span>
+      <button class="clear-btn" onclick="if(confirm('確定清空所有記帳記錄？'))clearAll()">🗑️ 清空</button>
+    </div>
+    <div id="exp-list-body">
+      <div class="exp-empty">還沒有記帳記錄</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: Checklist -->
+<div class="page" id="page-checklist">
+  <div class="sec-hdr" style="margin-top:14px;">✅ 出發前確認清單</div>
+
+  <div class="cl-section" id="cl-section-travel">
+    <div class="cl-sec-title">
+      <span>🎫 訂票 & 預訂</span>
+      <span class="cl-progress" id="prog-travel">0/5</span>
+    </div>
+    <div id="cl-items-travel">
+      <div class="cl-item" onclick="toggleCheck(this,'travel')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">機票已確認</div><div class="cl-sub">IT654 11/22 06:40 TPE→CJU・IT655 11/27 11:45 CJU→TPE</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'travel')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">飯店訂單確認</div><div class="cl-sub">Moments Inhado（11/22–24）・YAKMAEUL（11/24–27）</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'travel')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">確認韓國入境相關規定</div><div class="cl-sub">K-ETA／簽證，以出發前官方最新公告為準</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'travel')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">辦理韓國網路 eSIM / Wifi 蛋</div><div class="cl-sub">KKday / Klook 購買，機場取件或落地即用</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'travel')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">購買旅遊平安保險</div><div class="cl-sub">含醫療及行李遺失保障</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cl-section" id="cl-section-money">
+    <div class="cl-sec-title">
+      <span>💵 金錢 & 文件</span>
+      <span class="cl-progress" id="prog-money">0/4</span>
+    </div>
+    <div id="cl-items-money">
+      <div class="cl-item" onclick="toggleCheck(this,'money')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">換韓元現金</div><div class="cl-sub">部分小店 / 傳統市場不收卡</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'money')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">確認護照有效期限</div><div class="cl-sub">需超過回程日期 6 個月以上</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'money')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">信用卡開啟海外刷卡</div><div class="cl-sub">並確認是否有海外手續費優惠</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'money')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">辦理 T-money 交通卡</div><div class="cl-sub">機場、超商皆可購買儲值</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cl-section" id="cl-section-pack">
+    <div class="cl-sec-title">
+      <span>🧳 行李打包</span>
+      <span class="cl-progress" id="prog-pack">0/6</span>
+    </div>
+    <div id="cl-items-pack">
+      <div class="cl-item" onclick="toggleCheck(this,'pack')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">保暖外套 / 防風外套</div><div class="cl-sub">11 月早晚僅 5–10°C，沿海風大</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'pack')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">圍巾、手套</div><div class="cl-sub">戶外景點體感更冷</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'pack')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">輕便雨具</div><div class="cl-sub">11 月偶有陣雨</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'pack')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">舒適步行鞋</div><div class="cl-sub">濟州多戶外景點、海岸步道</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'pack')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">行動電源</div><div class="cl-sub">低溫會加速手機耗電</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'pack')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">常備藥品</div><div class="cl-sub">感冒藥、腸胃藥等</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cl-section" id="cl-section-app">
+    <div class="cl-sec-title">
+      <span>📱 App 準備</span>
+      <span class="cl-progress" id="prog-app">0/3</span>
+    </div>
+    <div id="cl-items-app">
+      <div class="cl-item" onclick="toggleCheck(this,'app')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">下載 Naver Map / Kakao Map</div><div class="cl-sub">韓國導航 Google Maps 不準，這兩款較實用</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'app')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">下載 Papago 翻譯 App</div><div class="cl-sub">拍照翻譯菜單、路牌很方便</div></div>
+      </div>
+      <div class="cl-item" onclick="toggleCheck(this,'app')">
+        <div class="cl-cb"></div><div class="cl-text"><div class="cl-label">儲存兩間飯店地址與電話</div><div class="cl-sub">Moments Inhado・YAKMAEUL</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 自訂清單 -->
+  <div class="cl-section">
+    <div class="cl-sec-title">
+      <span>📝 自訂清單</span>
+      <span class="cl-progress" id="prog-custom">0/0</span>
+    </div>
+    <div id="cl-items-custom"></div>
+    <div class="add-cl-row">
+      <input class="add-cl-input" id="cl-input" type="text" placeholder="新增自訂項目…" onkeydown="if(event.key==='Enter')addCheckItem()">
+      <button class="add-cl-btn" onclick="addCheckItem()">+</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- TAB BAR -->
+<div class="tabbar">
+  <button class="tab-btn active" onclick="switchPage('itinerary',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    行程
+  </button>
+  <button class="tab-btn" onclick="switchPage('weather',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    天氣
+  </button>
+  <button class="tab-btn" onclick="switchPage('expense',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    記帳
+  </button>
+  <button class="tab-btn" onclick="switchPage('checklist',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    清單
+  </button>
+</div>
+
+<script>
+// ── STORAGE HELPERS ──
+const STORE_KEY = 'cju_trip_v1';
+let state = { expenses: [], checks: {}, customChecks: [], rate: 43.5, persons: [] };
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e){} }
+function load() {
+  try {
+    const d = localStorage.getItem(STORE_KEY);
+    if (d) state = { ...state, ...JSON.parse(d) };
+  } catch(e) {}
+}
+
+// ── DATE ──
+(function() {
+  const now = new Date();
+  const days = ['日','一','二','三','四','五','六'];
+  document.getElementById('today-date').textContent =
+    (now.getMonth()+1) + '/' + now.getDate();
+  document.getElementById('today-label').textContent =
+    '週' + days[now.getDay()];
+})();
+
+// ── PAGE SWITCH ──
+function switchPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'weather') fetchWeather();
+}
+
+// ── DAY SWITCH ──
+function switchDay(i) {
+  document.querySelectorAll('.day-tab').forEach((t,j) => t.classList.toggle('active', i===j));
+  document.querySelectorAll('.day-content').forEach((c,j) => c.classList.toggle('active', i===j));
+}
+
+// ── WEATHER ──
+async function fetchWeather() {
+  const el = document.getElementById('weather-container');
+  el.innerHTML = '<div class="weather-card"><div class="weather-loading">⏳ 載入天氣中…</div></div>';
+  try {
+    const geo = await fetch('https://geocoding-api.open-meteo.com/v1/search?name=Jeju&count=1&language=zh');
+    const gd  = await geo.json();
+    const { latitude: lat, longitude: lon } = gd.results[0];
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,apparent_temperature&timezone=Asia%2FSeoul`;
+    const res = await fetch(url);
+    const d   = await res.json();
+    const c   = d.current;
+    const icons = {0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌦️',61:'🌧️',63:'🌧️',65:'🌧️',80:'🌦️',81:'🌧️',95:'⛈️'};
+    const descs = {0:'晴天',1:'大致晴朗',2:'局部多雲',3:'陰天',45:'有霧',48:'有霧',51:'毛毛雨',53:'毛毛雨',55:'毛毛雨',61:'小雨',63:'中雨',65:'大雨',80:'陣雨',81:'陣雨',95:'雷雨'};
+    const code = c.weather_code;
+    const icon = icons[code] || '🌡️';
+    const desc = descs[code] || '未知';
+    el.innerHTML = `
+      <div class="weather-card">
+        <div class="weather-main">
+          <div class="weather-icon">${icon}</div>
+          <div>
+            <div class="weather-temp">${Math.round(c.temperature_2m)}<sup>°C</sup></div>
+            <div class="weather-desc">${desc}</div>
+            <div class="weather-loc">📍 濟州島 Jeju</div>
+          </div>
+        </div>
+        <div class="weather-row">
+          <div class="weather-stat"><div class="weather-stat-val">${Math.round(c.apparent_temperature)}°C</div><div class="weather-stat-lbl">體感溫度</div></div>
+          <div class="weather-stat"><div class="weather-stat-val">${c.relative_humidity_2m}%</div><div class="weather-stat-lbl">濕度</div></div>
+          <div class="weather-stat"><div class="weather-stat-val">${Math.round(c.wind_speed_10m)}</div><div class="weather-stat-lbl">風速 km/h</div></div>
+        </div>
+        <div class="weather-time">更新於 ${new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})}</div>
+      </div>`;
+  } catch(e) {
+    el.innerHTML = '<div class="weather-card"><div class="weather-error">⚠️ 無法載入天氣<br>請確認網路連線</div></div>';
+  }
+}
+
+// ── EXPENSE (dual currency, local storage) ──
+const CATS = {
+  food:  { label:'餐飲', color:'#C8893A' },
+  trans: { label:'交通', color:'#2D4E6A' },
+  shop:  { label:'購物', color:'#5A3D6B' },
+  hotel: { label:'住宿', color:'#2D6A5E' },
+  ticket:{ label:'門票', color:'#C0392B' },
+};
+const PALETTE = ['#2D6A5E','#5A3D6B','#C8893A','#2D4E6A','#C0392B','#2D6A3F'];
+function personColor(name) {
+  let h = 0; for (let i=0;i<name.length;i++) h = (h*31 + name.charCodeAt(i)) >>> 0;
+  return PALETTE[h % PALETTE.length];
+}
+function toTWD(e) { return e.currency === 'KRW' ? Number(e.amt) / state.rate : Number(e.amt); }
+
+function updateRate() {
+  const v = parseFloat(document.getElementById('rate-input').value);
+  if (v > 0) { state.rate = v; save(); renderExpenses(); }
+}
+
+// ── MEMBERS ──
+function addMember() {
+  const input = document.getElementById('member-input');
+  const name = input.value.trim();
+  if (!name) return;
+  if (state.persons.includes(name)) { input.value = ''; return; }
+  state.persons.push(name);
+  save();
+  input.value = '';
+  renderMembers();
+  renderExpenses();
+}
+
+function removeMember(name) {
+  const used = state.expenses.some(e => e.person === name);
+  if (used && !confirm(`「${name}」已有記帳記錄，移除成員不會刪除那些記錄，但分帳人數會減少一人，確定移除？`)) return;
+  state.persons = state.persons.filter(p => p !== name);
+  save();
+  renderMembers();
+  renderExpenses();
+}
+
+function renderMembers() {
+  document.getElementById('member-chips').innerHTML = state.persons.length
+    ? state.persons.map(p => `<span class="member-chip">${p}<button onclick="removeMember('${p}')">×</button></span>`).join('')
+    : '<span style="font-size:12px;color:var(--muted);">尚未新增成員，請先在下方輸入姓名</span>';
+  const sel = document.getElementById('exp-person');
+  const prev = sel.value;
+  sel.innerHTML = state.persons.map(p => `<option value="${p}">${p}</option>`).join('');
+  if (state.persons.includes(prev)) sel.value = prev;
+}
+
+function addExpense() {
+  const person   = document.getElementById('exp-person').value;
+  const name     = document.getElementById('exp-name').value.trim();
+  const amt      = parseFloat(document.getElementById('exp-amt').value);
+  const cat      = document.getElementById('exp-cat').value;
+  const currency = document.getElementById('exp-currency').value;
+  if (!person) { alert('請先在上方新增同行成員'); return; }
+  if (!name || !amt || amt <= 0) { alert('請填寫名稱與金額'); return; }
+
+  state.expenses.push({
+    id: Date.now().toString(),
+    person, name, amt, cat, currency,
+    time: new Date().toLocaleDateString('zh-TW', { month:'numeric', day:'numeric' })
+  });
+  save();
+  document.getElementById('exp-name').value = '';
+  document.getElementById('exp-amt').value  = '';
+  renderExpenses();
+}
+
+function delExpense(id) {
+  if (!confirm('確定刪除這筆記錄？')) return;
+  state.expenses = state.expenses.filter(e => e.id !== id);
+  save();
+  renderExpenses();
+}
+
+function clearAll() {
+  state.expenses = [];
+  save();
+  renderExpenses();
+}
+
+function renderExpenses() {
+  document.getElementById('rate-input').value = state.rate;
+  const travelerCount = Math.max(1, state.persons.length);
+  document.getElementById('traveler-count-display').innerHTML = travelerCount + ' <span>人</span>';
+
+  const totalTWD = state.expenses.reduce((s,e) => s + toTWD(e), 0);
+  const totalKRW = totalTWD * state.rate;
+  document.getElementById('total-twd').textContent = 'NT$' + Math.round(totalTWD).toLocaleString();
+  document.getElementById('total-krw').textContent = '≈ ₩' + Math.round(totalKRW).toLocaleString();
+  document.getElementById('total-count').innerHTML = state.expenses.length + ' <span>筆</span>';
+
+  // 各類支出
+  const catTotals = { food:0, trans:0, shop:0, hotel:0, ticket:0 };
+  state.expenses.forEach(e => { if(catTotals[e.cat]!==undefined) catTotals[e.cat] += toTWD(e); });
+  const maxCat = Math.max(...Object.values(catTotals), 1);
+  Object.keys(catTotals).forEach(k => {
+    const bar = document.getElementById('bar-'+k);
+    const amt = document.getElementById('amt-'+k);
+    if (bar) bar.style.width = (catTotals[k]/maxCat*100) + '%';
+    if (amt) amt.textContent = 'NT$' + Math.round(catTotals[k]).toLocaleString();
+  });
+
+  // 各人花費（成員清單 + 歷史曾記過帳但已被移除的人一起顯示）
+  const persons = [...new Set([...state.persons, ...state.expenses.map(e => e.person)])];
+  const personTotals = {};
+  persons.forEach(p => personTotals[p] = 0);
+  state.expenses.forEach(e => { personTotals[e.person] += toTWD(e); });
+  const maxPerson = Math.max(...Object.values(personTotals), 1);
+  document.getElementById('person-bars').innerHTML = persons.length ? persons.map(p => `
+    <div class="cat-row">
+      <span class="cat-label" style="width:60px;font-size:11px;">${p}</span>
+      <div class="cat-bar-wrap">
+        <div class="cat-bar" style="width:${personTotals[p]/maxPerson*100}%;background:${personColor(p)}"></div>
+      </div>
+      <span class="cat-amt">NT$${Math.round(personTotals[p]).toLocaleString()}</span>
+    </div>`).join('') : '<div style="font-size:12px;color:var(--muted);">尚無記帳資料</div>';
+
+  // 分帳試算（以「同行人數」平均分攤，只有記過帳的人才會被列入應收/應付）
+  const share = totalTWD / travelerCount;
+  const balances = {}; persons.forEach(p => balances[p] = personTotals[p] - share);
+  const creditors = persons.filter(p => balances[p] > 1).map(p => ({ name:p, amt:balances[p] }));
+  const debtors   = persons.filter(p => balances[p] < -1).map(p => ({ name:p, amt:-balances[p] }));
+  let settlements = [];
+  let ci = 0, di = 0;
+  const cc = creditors.map(c => ({...c}));
+  const dc = debtors.map(d => ({...d}));
+  while (ci < cc.length && di < dc.length) {
+    const pay = Math.min(cc[ci].amt, dc[di].amt);
+    if (pay > 1) settlements.push(`${dc[di].name} 付給 ${cc[ci].name}：NT$${Math.round(pay).toLocaleString()}`);
+    cc[ci].amt -= pay; dc[di].amt -= pay;
+    if (cc[ci].amt < 1) ci++; if (dc[di].amt < 1) di++;
+  }
+  document.getElementById('split-result').innerHTML = totalTWD === 0
+    ? '記帳後自動計算誰欠誰多少'
+    : `<div style="margin-bottom:6px;">每人應分攤約 NT$${Math.round(share).toLocaleString()}（依同行人數 ${travelerCount} 人計算）</div>` +
+      (settlements.length === 0
+        ? '✅ 目前花費平均，不需分帳'
+        : settlements.map(s => `<div style="padding:4px 0;border-bottom:1px solid var(--border);">💸 ${s}</div>`).join(''));
+
+  // 明細
+  const body = document.getElementById('exp-list-body');
+  if (!state.expenses.length) {
+    body.innerHTML = '<div class="exp-empty">還沒有記帳記錄<br>新增第一筆支出吧！</div>';
+    return;
+  }
+  body.innerHTML = [...state.expenses].reverse().map(e => {
+    const symbol = e.currency === 'KRW' ? '₩' : 'NT$';
+    const twd = toTWD(e);
+    return `
+    <div class="exp-item">
+      <div class="exp-dot" style="background:${personColor(e.person)}"></div>
+      <div style="flex:1;min-width:0;">
+        <div class="exp-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${e.name}</div>
+        <div class="exp-cat">${e.person}・${CATS[e.cat]?.label||e.cat}・${e.time||''}</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="exp-amt">${symbol}${Number(e.amt).toLocaleString()}</div>
+        ${e.currency === 'KRW' ? `<div class="exp-amt-sub">≈NT$${Math.round(twd).toLocaleString()}</div>` : ''}
+      </div>
+      <button class="exp-del" onclick="delExpense('${e.id}')">×</button>
+    </div>`;
+  }).join('');
+}
+
+// ── CHECKLIST ──
+const SECTIONS = ['travel','money','pack','app'];
+
+function toggleCheck(el, sec) {
+  el.classList.toggle('done');
+  const id = Array.from(el.parentNode.children).indexOf(el);
+  const key = sec + '_' + id;
+  if (el.classList.contains('done')) {
+    state.checks[key] = true;
+    el.querySelector('.cl-cb').textContent = '✓';
+  } else {
+    delete state.checks[key];
+    el.querySelector('.cl-cb').textContent = '';
+  }
+  save();
+  updateProgress(sec);
+}
+
+function updateProgress(sec) {
+  const container = document.getElementById('cl-items-' + sec);
+  if (!container) return;
+  const items = container.querySelectorAll('.cl-item');
+  const done  = container.querySelectorAll('.cl-item.done').length;
+  const prog  = document.getElementById('prog-' + sec);
+  if (prog) prog.textContent = done + '/' + items.length;
+}
+
+function updateCustomProgress() {
+  const items = document.getElementById('cl-items-custom').querySelectorAll('.cl-item');
+  const done  = document.getElementById('cl-items-custom').querySelectorAll('.cl-item.done').length;
+  document.getElementById('prog-custom').textContent = done + '/' + items.length;
+}
+
+function addCheckItem() {
+  const input = document.getElementById('cl-input');
+  const text  = input.value.trim();
+  if (!text) return;
+  state.customChecks.push({ text, done: false });
+  save();
+  input.value = '';
+  renderCustomChecks();
+}
+
+function renderCustomChecks() {
+  const container = document.getElementById('cl-items-custom');
+  container.innerHTML = state.customChecks.map((item, i) => `
+    <div class="cl-item${item.done ? ' done' : ''}" onclick="toggleCustom(${i})">
+      <div class="cl-cb">${item.done ? '✓' : ''}</div>
+      <div class="cl-text"><div class="cl-label">${item.text}</div></div>
+    </div>`).join('');
+  updateCustomProgress();
+}
+
+function toggleCustom(i) {
+  state.customChecks[i].done = !state.customChecks[i].done;
+  save(); renderCustomChecks();
+}
+
+// ── INIT ──
+load();
+renderMembers();
+renderExpenses();
+
+// Restore checklist state
+SECTIONS.forEach(sec => {
+  const container = document.getElementById('cl-items-' + sec);
+  if (!container) return;
+  const items = container.querySelectorAll('.cl-item');
+  items.forEach((el, i) => {
+    if (state.checks[sec + '_' + i]) {
+      el.classList.add('done');
+      el.querySelector('.cl-cb').textContent = '✓';
+    }
+  });
+  updateProgress(sec);
+});
+renderCustomChecks();
+</script>
+</body>
+</html>
