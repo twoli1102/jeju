@@ -340,7 +340,7 @@ body {
 <div class="topbar">
   <div>
     <div class="topbar-title">🏝️ 濟州島旅遊小幫手</div>
-    <div class="topbar-sub">Moments Inhado → YAKMAEUL・11/22–11/27</div>
+    <div class="topbar-sub" id="topbar-sub"></div>
   </div>
   <div class="topbar-date" id="topbar-date">
     <div id="today-label" style="font-size:11px;opacity:0.8;">今天</div>
@@ -352,437 +352,14 @@ body {
 <div class="page active" id="page-itinerary">
 
   <div class="sec-hdr" style="margin-top:14px;">✈️ 航班資訊</div>
-  <div class="card" style="padding:12px 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:4px;">去程 11/22（日）IT654</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">TPE 06:40 → CJU 09:50（一航廈）</div>
-    <div style="font-size:13px;font-weight:700;margin-bottom:4px;">回程 11/27（五）IT655</div>
-    <div style="font-size:12px;color:var(--muted);">CJU 11:45 → TPE 12:55</div>
-  </div>
+  <div class="card" style="padding:12px 14px;" id="flight-box"></div>
 
   <div class="sec-hdr">🏨 住宿飯店</div>
-  <div class="hotel-card">
-    <div class="hotel-icon">🏠</div>
-    <div class="hotel-info">
-      <div class="hotel-name">Moments Inhado</div>
-      <div class="hotel-detail">
-        🗓 入住 11/22（日）・退房 11/24（二）・共 2 晚<br>
-        💰 NT$19,930
-      </div>
-      <a class="hotel-map-btn" href="https://maps.google.com/?q=Moments+Inhado+Jeju" target="_blank">📍 Google Maps</a>
-    </div>
-  </div>
-  <div class="hotel-card">
-    <div class="hotel-icon">🏠</div>
-    <div class="hotel-info">
-      <div class="hotel-name">YAKMAEUL</div>
-      <div class="hotel-detail">
-        🗓 入住 11/24（二）・退房 11/27（五）・共 3 晚<br>
-        💰 NT$12,680
-      </div>
-      <a class="hotel-map-btn" href="https://maps.google.com/?q=YAKMAEUL+Jeju" target="_blank">📍 Google Maps</a>
-    </div>
-  </div>
+  <div id="hotel-box"></div>
 
   <div class="sec-hdr">🗓 行程</div>
-  <div class="day-tabs">
-    <div class="day-tab active" onclick="switchDay(0)">11/22 Day1</div>
-    <div class="day-tab" onclick="switchDay(1)">11/23 Day2</div>
-    <div class="day-tab" onclick="switchDay(2)">11/24 Day3</div>
-    <div class="day-tab" onclick="switchDay(3)">11/25 Day4</div>
-    <div class="day-tab" onclick="switchDay(4)">11/26 Day5</div>
-    <div class="day-tab" onclick="switchDay(5)">11/27 返程</div>
-  </div>
-
-  <!-- Day 0 -->
-  <div class="day-content active" id="day-0">
-    <div class="stop">
-      <div class="stop-dot">✈️</div>
-      <div class="stop-body">
-        <div class="stop-time">06:40</div>
-        <div class="stop-name">桃園機場出發 TPE → CJU（IT654）</div>
-        <div class="stop-note">一航廈起飛，飛行時間約 2 小時 10 分</div>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🛬</div>
-      <div class="stop-body">
-        <div class="stop-time">09:50</div>
-        <div class="stop-name">抵達濟州機場 CJU</div>
-        <div class="stop-note">入境後辦理網路與交通資訊</div>
-        <a class="stop-map" href="https://maps.google.com/?q=Jeju+International+Airport" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🚗</div>
-      <div class="stop-body">
-        <div class="stop-name">租車取車</div>
-        <div class="stop-note">取車後開始環島行程</div>
-        <span class="stop-tag t-sight">租車</span>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🛒</div>
-      <div class="stop-body">
-        <div class="stop-name">東門市場</div>
-        <div class="stop-note">濟州市區傳統市場，邊逛邊吃</div>
-        <span class="stop-tag t-market">市場</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Dongmun+Market+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🍢</div>
-      <div class="stop-body">
-        <div class="stop-name">七星街</div>
-        <div class="stop-note">東門市場周邊商圈，順路逛</div>
-        <span class="stop-tag t-sight">景點</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Chilseongro+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🛍️</div>
-      <div class="stop-body">
-        <div class="stop-name">蓮洞商圈</div>
-        <div class="stop-note">逛街購物區</div>
-        <span class="stop-tag t-market">市場</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Yeondong+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🏬</div>
-      <div class="stop-body">
-        <div class="stop-name">中央地下街</div>
-        <div class="stop-note">地下商店街</div>
-        <span class="stop-tag t-market">市場</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Jungang+Underground+Shopping+Center+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🍙</div>
-      <div class="stop-body">
-        <div class="stop-time">營業到 15:30</div>
-        <div class="stop-name">海女飯捲</div>
-        <div class="stop-note">⚠️ 15:30 打烊，需先吃</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Haenyeo+Gimbap+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🥖</div>
-      <div class="stop-body">
-        <div class="stop-time">營業到 22:00</div>
-        <div class="stop-name">大蒜麵包</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Garlic+Bread+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🥯</div>
-      <div class="stop-body">
-        <div class="stop-time">營業到 18:00</div>
-        <div class="stop-name">London Bagel</div>
-        <div class="stop-note">⚠️ 18:00 打烊</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=London+Bagel+Museum+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🦘</div>
-      <div class="stop-body">
-        <div class="stop-time">營業到 18:00</div>
-        <div class="stop-name">object 矮袋鼠</div>
-        <div class="stop-note">⚠️ 18:00 打烊</div>
-        <span class="stop-tag t-sight">景點</span>
-        <a class="stop-map" href="https://maps.google.com/?q=object+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🏠</div>
-      <div class="stop-body">
-        <div class="stop-name">Check in Moments Inhado</div>
-        <div class="stop-note">放行李、稍作休息</div>
-        <a class="stop-map" href="https://maps.google.com/?q=Moments+Inhado+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🍽️</div>
-      <div class="stop-body">
-        <div class="stop-name">晚餐：明珍鮑魚</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Myeongjin+Jeonbok+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Day 1 -->
-  <div class="day-content" id="day-1">
-    <div class="stop">
-      <div class="stop-dot">☕</div>
-      <div class="stop-body">
-        <div class="stop-time">10:00 開始營業</div>
-        <div class="stop-name">早餐：orrn 咖啡廳</div>
-        <div class="stop-note">10 點開門，與牛島出發時間接近，視渡輪班次調整</div>
-        <span class="stop-tag t-cafe">咖啡廳</span>
-        <span class="stop-tag t-todo">待確認</span>
-        <a class="stop-map" href="https://maps.google.com/?q=orrn+cafe+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🚢</div>
-      <div class="stop-body">
-        <div class="stop-time">10:00</div>
-        <div class="stop-name">牛島</div>
-        <div class="stop-note">招牌花生冰 Udo</div>
-        <span class="stop-tag t-sight">景點</span>
-        <span class="stop-tag t-cafe">甜點</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Udo+Island+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🍽️</div>
-      <div class="stop-body">
-        <div class="stop-name">午餐：牛島解決</div>
-        <span class="stop-tag t-food">美食</span>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🍜</div>
-      <div class="stop-body">
-        <div class="stop-time">營業到 21:00</div>
-        <div class="stop-name">晚餐：海螺刀削麵</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Jeju+whelk+kalguksu" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🍗</div>
-      <div class="stop-body">
-        <div class="stop-name">橋村炸雞 城山日出峰店</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Kyochon+Chicken+Seongsan+Ilchulbong" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Day 2 -->
-  <div class="day-content" id="day-2">
-    <div class="stop">
-      <div class="stop-dot">🧳</div>
-      <div class="stop-body">
-        <div class="stop-name">退房 Moments Inhado</div>
-        <a class="stop-map" href="https://maps.google.com/?q=Moments+Inhado+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🌅</div>
-      <div class="stop-body">
-        <div class="stop-name">城山日出峰</div>
-        <span class="stop-tag t-sight">景點</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Seongsan+Ilchulbong" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🏞️</div>
-      <div class="stop-body">
-        <div class="stop-name">涉地可支</div>
-        <span class="stop-tag t-sight">景點</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Seopjikoji+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🛒</div>
-      <div class="stop-body">
-        <div class="stop-name">午餐：偶來市場</div>
-        <span class="stop-tag t-food">美食</span>
-        <span class="stop-tag t-market">市場</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Seogwipo+Olle+Market" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">💦</div>
-      <div class="stop-body">
-        <div class="stop-name">正房瀑布</div>
-        <span class="stop-tag t-sight">景點</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Jeongbang+Waterfall+Seogwipo" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🌊</div>
-      <div class="stop-body">
-        <div class="stop-name">大浦海岸柱狀節理</div>
-        <span class="stop-tag t-sight">景點</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Daepo+Jusangjeolli+Cliff" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🍖</div>
-      <div class="stop-body">
-        <div class="stop-time">營業到 22:30</div>
-        <div class="stop-name">晚餐：donbellong 烤豬肉</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Donbellong+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🏠</div>
-      <div class="stop-body">
-        <div class="stop-name">入住 YAKMAEUL</div>
-        <div class="stop-note">11/24–27 共 3 晚，視位置與入住時間調整</div>
-        <a class="stop-map" href="https://maps.google.com/?q=YAKMAEUL+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Day 3 -->
-  <div class="day-content" id="day-3">
-    <div class="stop">
-      <div class="stop-dot">🌺</div>
-      <div class="stop-body">
-        <div class="stop-name">山茶花之丘</div>
-        <span class="stop-tag t-sight">景點</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Camellia+Hill+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🛍️</div>
-      <div class="stop-body">
-        <div class="stop-name">神話 outlet</div>
-        <span class="stop-tag t-market">市場</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Jeju+Shinhwa+World+Outlet" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🍲</div>
-      <div class="stop-body">
-        <div class="stop-name">午餐：三姓穴海鮮湯</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Samseonghyeol+seafood+soup+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">☕</div>
-      <div class="stop-body">
-        <div class="stop-name">Haejigae 咖啡廳</div>
-        <span class="stop-tag t-cafe">咖啡廳</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Haejigae+cafe+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🥩</div>
-      <div class="stop-body">
-        <div class="stop-name">晚餐：熟成到黑豬肉</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Jeju+black+pork+aged" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🍗</div>
-      <div class="stop-body">
-        <div class="stop-name">BHC 炸雞 新濟州店</div>
-        <div class="stop-note">有濟州島限定口味</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=BHC+Chicken+New+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Day 4 -->
-  <div class="day-content" id="day-4">
-    <div class="stop">
-      <div class="stop-dot">🍜</div>
-      <div class="stop-body">
-        <div class="stop-name">早餐：noraba 海鮮拉麵</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Noraba+seafood+ramen+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">☕</div>
-      <div class="stop-body">
-        <div class="stop-name">咖啡廳</div>
-        <div class="stop-note">店家尚未決定</div>
-        <span class="stop-tag t-cafe">咖啡廳</span>
-        <span class="stop-tag t-todo">待確認</span>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🌈</div>
-      <div class="stop-body">
-        <div class="stop-name">彩虹海岸道路</div>
-        <span class="stop-tag t-sight">景點</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Rainbow+Coastal+Road+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🎁</div>
-      <div class="stop-body">
-        <div class="stop-name">my jejugift</div>
-        <div class="stop-note">伴手禮</div>
-        <span class="stop-tag t-market">市場</span>
-        <a class="stop-map" href="https://maps.google.com/?q=my+jejugift+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🐟</div>
-      <div class="stop-body">
-        <div class="stop-name">午餐：濟州帶魚忠旼政</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Jeju+hairtail+Chungminjeong" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🛍️</div>
-      <div class="stop-body">
-        <div class="stop-name">逛新羅免稅店</div>
-        <div class="stop-note">需帶護照與登機資訊</div>
-        <span class="stop-tag t-market">市場</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Shilla+Duty+Free+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🥩</div>
-      <div class="stop-body">
-        <div class="stop-name">晚餐：明浩蒜農烤韓牛</div>
-        <div class="stop-note">最後一晚</div>
-        <span class="stop-tag t-food">美食</span>
-        <a class="stop-map" href="https://maps.google.com/?q=Myeongho+garlic+farm+Korean+beef+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Day 5 -->
-  <div class="day-content" id="day-5">
-    <div class="stop">
-      <div class="stop-dot">🧳</div>
-      <div class="stop-body">
-        <div class="stop-name">退房 YAKMAEUL</div>
-        <a class="stop-map" href="https://maps.google.com/?q=YAKMAEUL+Jeju" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🚗</div>
-      <div class="stop-body">
-        <div class="stop-name">還車</div>
-        <div class="stop-note">預留還車與接駁時間，再前往機場</div>
-        <span class="stop-tag t-sight">租車</span>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">✈️</div>
-      <div class="stop-body">
-        <div class="stop-time">11:45 起飛</div>
-        <div class="stop-name">濟州機場出發 CJU → TPE（IT655）</div>
-        <div class="stop-note">建議提前 2 小時抵達機場</div>
-        <a class="stop-map" href="https://maps.google.com/?q=Jeju+International+Airport" target="_blank">📍 地圖</a>
-      </div>
-    </div>
-    <div class="stop">
-      <div class="stop-dot">🛬</div>
-      <div class="stop-body">
-        <div class="stop-time">12:55</div>
-        <div class="stop-name">抵達桃園機場 TPE</div>
-      </div>
-    </div>
-  </div>
+  <div class="day-tabs" id="day-tabs"></div>
+  <div id="day-box"></div>
 
 </div>
 
@@ -809,6 +386,9 @@ body {
 <!-- PAGE: 記帳 -->
 <div class="page" id="page-expense">
   <div class="sec-hdr" style="margin-top:14px;">💰 旅費記帳</div>
+  <div id="sync-bar" style="display:none;border:1px solid #E8C87A;background:#FDF0DC;color:#7A5010;border-radius:8px;padding:9px 12px;font-size:12px;margin-bottom:10px;align-items:center;gap:6px;">
+    <span id="sync-icon">⏳</span><span id="sync-msg"></span>
+  </div>
 
   <!-- 總覽 -->
   <div class="expense-summary">
@@ -1033,6 +613,113 @@ body {
   </button>
 </div>
 
+<!--
+════════════════════════════════════════════
+ ✏️ 行程設定區（要改行程只需要改這一段）
+ 規則：
+ 1. 只改引號 " " 裡面的文字，不要刪掉引號、逗號、大括號
+ 2. 新增景點：複製一整行 { ... }, 貼到想要的位置
+ 3. 刪除景點：刪掉那一整行
+ 4. 改完存檔上傳即可
+════════════════════════════════════════════
+-->
+<script>
+const TRIP = {
+  subtitle: "Moments Inhado → YAKMAEUL・11/22–11/27",
+
+  // ✈️ 航班：title 是粗體標題，detail 是第二行
+  flights: [
+    {"title": "去程 11/22（日）IT654", "detail": "TPE 06:40 → CJU 09:50（一航廈）"},
+    {"title": "回程 11/27（五）IT655", "detail": "CJU 11:45 → TPE 12:55"},
+  ],
+
+  // 🏨 住宿：detail 可用 <br> 換行；map 填 Google Maps 搜尋關鍵字
+  hotels: [
+    {"name": "Moments Inhado", "detail": "🗓 入住 11/22（日）・退房 11/24（二）・共 2 晚<br>💰 NT$19,930", "map": "Moments Inhado Jeju"},
+    {"name": "YAKMAEUL", "detail": "🗓 入住 11/24（二）・退房 11/27（五）・共 3 晚<br>💰 NT$12,680", "map": "YAKMAEUL Jeju"},
+  ],
+
+  // 🗓 行程：每一天一個區塊，每個景點一行。
+  // icon=圖示  time=時間(可省略)  name=名稱  note=備註(可省略)
+  // tags=標籤，可用：美食 景點 咖啡廳 市場 待確認 租車   map=Google Maps 搜尋關鍵字(可省略)
+  days: [
+    {
+      tab: "11/22 Day1",
+      stops: [
+        {"icon": "✈️", "time": "06:40", "name": "桃園機場出發 TPE → CJU（IT654）", "note": "一航廈起飛，飛行時間約 2 小時 10 分"},
+        {"icon": "🛬", "time": "09:50", "name": "抵達濟州機場 CJU", "note": "入境後辦理網路與交通資訊", "map": "Jeju International Airport"},
+        {"icon": "🚗", "name": "租車取車", "note": "取車後開始環島行程", "tags": ["租車"]},
+        {"icon": "🛒", "name": "東門市場", "note": "濟州市區傳統市場，邊逛邊吃", "tags": ["市場"], "map": "Dongmun Market Jeju"},
+        {"icon": "🍢", "name": "七星街", "note": "東門市場周邊商圈，順路逛", "tags": ["景點"], "map": "Chilseongro Jeju"},
+        {"icon": "🛍️", "name": "蓮洞商圈", "note": "逛街購物區", "tags": ["市場"], "map": "Yeondong Jeju"},
+        {"icon": "🏬", "name": "中央地下街", "note": "地下商店街", "tags": ["市場"], "map": "Jungang Underground Shopping Center Jeju"},
+        {"icon": "🍙", "time": "營業到 15:30", "name": "海女飯捲", "note": "⚠️ 15:30 打烊，需先吃", "tags": ["美食"], "map": "Haenyeo Gimbap Jeju"},
+        {"icon": "🥖", "time": "營業到 22:00", "name": "大蒜麵包", "tags": ["美食"], "map": "Garlic Bread Jeju"},
+        {"icon": "🥯", "time": "營業到 18:00", "name": "London Bagel", "note": "⚠️ 18:00 打烊", "tags": ["美食"], "map": "London Bagel Museum Jeju"},
+        {"icon": "🦘", "time": "營業到 18:00", "name": "object 矮袋鼠", "note": "⚠️ 18:00 打烊", "tags": ["景點"], "map": "object Jeju"},
+        {"icon": "🏠", "name": "Check in Moments Inhado", "note": "放行李、稍作休息", "map": "Moments Inhado Jeju"},
+        {"icon": "🍽️", "name": "晚餐：明珍鮑魚", "tags": ["美食"], "map": "Myeongjin Jeonbok Jeju"},
+      ]
+    },
+    {
+      tab: "11/23 Day2",
+      stops: [
+        {"icon": "☕", "time": "10:00 開始營業", "name": "早餐：orrn 咖啡廳", "note": "10 點開門，與牛島出發時間接近，視渡輪班次調整", "tags": ["咖啡廳", "待確認"], "map": "orrn cafe Jeju"},
+        {"icon": "🚢", "time": "10:00", "name": "牛島", "note": "招牌花生冰 Udo", "tags": ["景點", "甜點"], "map": "Udo Island Jeju"},
+        {"icon": "🍽️", "name": "午餐：牛島解決", "tags": ["美食"]},
+        {"icon": "🍜", "time": "營業到 21:00", "name": "晚餐：海螺刀削麵", "tags": ["美食"], "map": "Jeju whelk kalguksu"},
+        {"icon": "🍗", "name": "橋村炸雞 城山日出峰店", "tags": ["美食"], "map": "Kyochon Chicken Seongsan Ilchulbong"},
+      ]
+    },
+    {
+      tab: "11/24 Day3",
+      stops: [
+        {"icon": "🧳", "name": "退房 Moments Inhado", "map": "Moments Inhado Jeju"},
+        {"icon": "🌅", "name": "城山日出峰", "tags": ["景點"], "map": "Seongsan Ilchulbong"},
+        {"icon": "🏞️", "name": "涉地可支", "tags": ["景點"], "map": "Seopjikoji Jeju"},
+        {"icon": "🛒", "name": "午餐：偶來市場", "tags": ["美食", "市場"], "map": "Seogwipo Olle Market"},
+        {"icon": "💦", "name": "正房瀑布", "tags": ["景點"], "map": "Jeongbang Waterfall Seogwipo"},
+        {"icon": "🌊", "name": "大浦海岸柱狀節理", "tags": ["景點"], "map": "Daepo Jusangjeolli Cliff"},
+        {"icon": "🍖", "time": "營業到 22:30", "name": "晚餐：donbellong 烤豬肉", "tags": ["美食"], "map": "Donbellong Jeju"},
+        {"icon": "🏠", "name": "入住 YAKMAEUL", "note": "11/24–27 共 3 晚，視位置與入住時間調整", "map": "YAKMAEUL Jeju"},
+      ]
+    },
+    {
+      tab: "11/25 Day4",
+      stops: [
+        {"icon": "🌺", "name": "山茶花之丘", "tags": ["景點"], "map": "Camellia Hill Jeju"},
+        {"icon": "🛍️", "name": "神話 outlet", "tags": ["市場"], "map": "Jeju Shinhwa World Outlet"},
+        {"icon": "🍲", "name": "午餐：三姓穴海鮮湯", "tags": ["美食"], "map": "Samseonghyeol seafood soup Jeju"},
+        {"icon": "☕", "name": "Haejigae 咖啡廳", "tags": ["咖啡廳"], "map": "Haejigae cafe Jeju"},
+        {"icon": "🥩", "name": "晚餐：熟成到黑豬肉", "tags": ["美食"], "map": "Jeju black pork aged"},
+        {"icon": "🍗", "name": "BHC 炸雞 新濟州店", "note": "有濟州島限定口味", "tags": ["美食"], "map": "BHC Chicken New Jeju"},
+      ]
+    },
+    {
+      tab: "11/26 Day5",
+      stops: [
+        {"icon": "🍜", "name": "早餐：noraba 海鮮拉麵", "tags": ["美食"], "map": "Noraba seafood ramen Jeju"},
+        {"icon": "☕", "name": "咖啡廳", "note": "店家尚未決定", "tags": ["咖啡廳", "待確認"]},
+        {"icon": "🌈", "name": "彩虹海岸道路", "tags": ["景點"], "map": "Rainbow Coastal Road Jeju"},
+        {"icon": "🎁", "name": "my jejugift", "note": "伴手禮", "tags": ["市場"], "map": "my jejugift Jeju"},
+        {"icon": "🐟", "name": "午餐：濟州帶魚忠旼政", "tags": ["美食"], "map": "Jeju hairtail Chungminjeong"},
+        {"icon": "🛍️", "name": "逛新羅免稅店", "note": "需帶護照與登機資訊", "tags": ["市場"], "map": "Shilla Duty Free Jeju"},
+        {"icon": "🥩", "name": "晚餐：明浩蒜農烤韓牛", "note": "最後一晚", "tags": ["美食"], "map": "Myeongho garlic farm Korean beef Jeju"},
+      ]
+    },
+    {
+      tab: "11/27 返程",
+      stops: [
+        {"icon": "🧳", "name": "退房 YAKMAEUL", "map": "YAKMAEUL Jeju"},
+        {"icon": "🚗", "name": "還車", "note": "預留還車與接駁時間，再前往機場", "tags": ["租車"]},
+        {"icon": "✈️", "time": "11:45 起飛", "name": "濟州機場出發 CJU → TPE（IT655）", "note": "建議提前 2 小時抵達機場", "map": "Jeju International Airport"},
+        {"icon": "🛬", "time": "12:55", "name": "抵達桃園機場 TPE"},
+      ]
+    },
+  ]
+};
+</script>
+
 <script>
 // ── STORAGE HELPERS ──
 const STORE_KEY = 'cju_trip_v1';
@@ -1043,6 +730,42 @@ function load() {
     const d = localStorage.getItem(STORE_KEY);
     if (d) state = { ...state, ...JSON.parse(d) };
   } catch(e) {}
+}
+
+// ── RENDER TRIP (讀取上方 TRIP 設定) ──
+const TAG_CLASS = { '美食':'t-food','景點':'t-sight','咖啡廳':'t-cafe','市場':'t-market','待確認':'t-todo','租車':'t-sight' };
+function esc(t) { return String(t == null ? '' : t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function mapUrl(q) { return 'https://maps.google.com/?q=' + encodeURIComponent(q); }
+function renderTrip() {
+  document.getElementById('topbar-sub').textContent = TRIP.subtitle || '';
+  document.getElementById('flight-box').innerHTML = (TRIP.flights || []).map((f, i) => `
+    <div style="font-size:13px;font-weight:700;margin-bottom:4px;">${esc(f.title)}</div>
+    <div style="font-size:12px;color:var(--muted);${i < TRIP.flights.length - 1 ? 'margin-bottom:10px;' : ''}">${esc(f.detail)}</div>`).join('');
+  document.getElementById('hotel-box').innerHTML = (TRIP.hotels || []).map(h => `
+    <div class="hotel-card">
+      <div class="hotel-icon">🏠</div>
+      <div class="hotel-info">
+        <div class="hotel-name">${esc(h.name)}</div>
+        <div class="hotel-detail">${esc(h.detail).replace(/&lt;br&gt;/g, '<br>')}</div>
+        ${h.map ? `<a class="hotel-map-btn" href="${mapUrl(h.map)}" target="_blank">📍 Google Maps</a>` : ''}
+      </div>
+    </div>`).join('');
+  document.getElementById('day-tabs').innerHTML = (TRIP.days || []).map((d, i) =>
+    `<div class="day-tab${i === 0 ? ' active' : ''}" onclick="switchDay(${i})">${esc(d.tab)}</div>`).join('');
+  document.getElementById('day-box').innerHTML = (TRIP.days || []).map((d, i) => `
+    <div class="day-content${i === 0 ? ' active' : ''}" id="day-${i}">
+      ${(d.stops || []).map(st => `
+      <div class="stop">
+        <div class="stop-dot">${esc(st.icon || '📍')}</div>
+        <div class="stop-body">
+          ${st.time ? `<div class="stop-time">${esc(st.time)}</div>` : ''}
+          <div class="stop-name">${esc(st.name)}</div>
+          ${st.note ? `<div class="stop-note">${esc(st.note)}</div>` : ''}
+          ${(st.tags || []).map(t => `<span class="stop-tag ${TAG_CLASS[t] || 't-sight'}">${esc(t)}</span>`).join('')}
+          ${st.map ? `<a class="stop-map" href="${mapUrl(st.map)}" target="_blank">📍 地圖</a>` : ''}
+        </div>
+      </div>`).join('')}
+    </div>`).join('');
 }
 
 // ── DATE ──
@@ -1062,6 +785,7 @@ function switchPage(id, btn) {
   document.getElementById('page-' + id).classList.add('active');
   btn.classList.add('active');
   if (id === 'weather') fetchWeather();
+  if (id === 'expense') apiLoad();
 }
 
 // ── DAY SWITCH ──
@@ -1078,7 +802,7 @@ async function fetchWeather() {
     const geo = await fetch('https://geocoding-api.open-meteo.com/v1/search?name=Jeju&count=1&language=zh');
     const gd  = await geo.json();
     const { latitude: lat, longitude: lon } = gd.results[0];
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,apparent_temperature&timezone=Asia%2FSeoul`;
+    const url = `https://script.google.com/macros/s/AKfycbx5jUkBogg5YWA8JHgDWiMU4W_fFtR7tx_hTCxXiP2RQHPopsdClxpwgKLtnzpxz5R0/exec`;
     const res = await fetch(url);
     const d   = await res.json();
     const c   = d.current;
@@ -1129,8 +853,45 @@ function updateRate() {
   if (v > 0) { state.rate = v; save(); renderExpenses(); }
 }
 
+// ── GOOGLE SHEETS 同步 ──
+// 把 Apps Script 部署後的網址（/exec 結尾）貼在下面引號內；留空則只存在這支手機（本機模式）
+const API_URL = '';
+
+function setSync(icon, msg, kind) {
+  const bar = document.getElementById('sync-bar');
+  bar.style.display = 'flex';
+  const c = { ok:['#D6EDDF','#8AC4A0','#1A5C30'], err:['#FDECEA','#E8A0A0','#7A1010'], load:['#FDF0DC','#E8C87A','#7A5010'] }[kind];
+  bar.style.background = c[0]; bar.style.borderColor = c[1]; bar.style.color = c[2];
+  document.getElementById('sync-icon').textContent = icon;
+  document.getElementById('sync-msg').textContent = msg;
+  if (kind === 'ok') setTimeout(() => { bar.style.display = 'none'; }, 1800);
+}
+function fixTime(t) {
+  if (typeof t === 'string' && t.includes('T')) { const d = new Date(t); if (!isNaN(d)) return (d.getMonth()+1) + '/' + d.getDate(); }
+  return t || '';
+}
+async function apiPost(body) {
+  const res = await fetch(API_URL, { method:'POST', body: JSON.stringify(body) });
+  const d = await res.json();
+  if (!d.ok) throw new Error(d.error || 'fail');
+  return d;
+}
+async function apiLoad() {
+  if (!API_URL) return;
+  setSync('⏳', '同步中…', 'load');
+  try {
+    const res = await fetch(API_URL);
+    const d = await res.json();
+    if (!d.ok) throw new Error('fail');
+    state.expenses = (d.data.expenses || []).map(e => ({ ...e, time: fixTime(e.time) }));
+    state.persons = d.data.members || [];
+    save(); renderMembers(); renderExpenses();
+    setSync('✅', '已同步', 'ok');
+  } catch (e) { setSync('❌', '無法連線 Google 試算表，顯示的是本機資料', 'err'); }
+}
+
 // ── MEMBERS ──
-function addMember() {
+async function addMember() {
   const input = document.getElementById('member-input');
   const name = input.value.trim();
   if (!name) return;
@@ -1140,15 +901,23 @@ function addMember() {
   input.value = '';
   renderMembers();
   renderExpenses();
+  if (API_URL) {
+    try { await apiPost({ action:'addMember', name }); setSync('✅', '成員已同步', 'ok'); }
+    catch (e) { setSync('❌', '成員同步失敗，請按重新整理確認', 'err'); }
+  }
 }
 
-function removeMember(name) {
+async function removeMember(name) {
   const used = state.expenses.some(e => e.person === name);
   if (used && !confirm(`「${name}」已有記帳記錄，移除成員不會刪除那些記錄，但分帳人數會減少一人，確定移除？`)) return;
   state.persons = state.persons.filter(p => p !== name);
   save();
   renderMembers();
   renderExpenses();
+  if (API_URL) {
+    try { await apiPost({ action:'deleteMember', name }); setSync('✅', '成員已同步', 'ok'); }
+    catch (e) { setSync('❌', '成員同步失敗，請按重新整理確認', 'err'); }
+  }
 }
 
 function renderMembers() {
@@ -1161,7 +930,7 @@ function renderMembers() {
   if (state.persons.includes(prev)) sel.value = prev;
 }
 
-function addExpense() {
+async function addExpense() {
   const person   = document.getElementById('exp-person').value;
   const name     = document.getElementById('exp-name').value.trim();
   const amt      = parseFloat(document.getElementById('exp-amt').value);
@@ -1170,19 +939,35 @@ function addExpense() {
   if (!person) { alert('請先在上方新增同行成員'); return; }
   if (!name || !amt || amt <= 0) { alert('請填寫名稱與金額'); return; }
 
-  state.expenses.push({
-    id: Date.now().toString(),
-    person, name, amt, cat, currency,
-    time: new Date().toLocaleDateString('zh-TW', { month:'numeric', day:'numeric' })
-  });
+  const time = new Date().toLocaleDateString('zh-TW', { month:'numeric', day:'numeric' });
+  if (API_URL) {
+    const btn = document.getElementById('add-btn');
+    btn.disabled = true; btn.textContent = '上傳中…';
+    setSync('⏳', '新增中…', 'load');
+    try {
+      await apiPost({ action:'addExpense', person, name, amt, cat, currency, time });
+      document.getElementById('exp-name').value = '';
+      document.getElementById('exp-amt').value  = '';
+      await apiLoad();
+    } catch (e) { setSync('❌', '新增失敗，請確認網路後再試', 'err'); }
+    btn.disabled = false; btn.textContent = '記帳';
+    return;
+  }
+  state.expenses.push({ id: Date.now().toString(), person, name, amt, cat, currency, time });
   save();
   document.getElementById('exp-name').value = '';
   document.getElementById('exp-amt').value  = '';
   renderExpenses();
 }
 
-function delExpense(id) {
+async function delExpense(id) {
   if (!confirm('確定刪除這筆記錄？')) return;
+  if (API_URL) {
+    setSync('⏳', '刪除中…', 'load');
+    try { await apiPost({ action:'deleteExpense', id }); await apiLoad(); }
+    catch (e) { setSync('❌', '刪除失敗，請確認網路後再試', 'err'); }
+    return;
+  }
   state.expenses = state.expenses.filter(e => e.id !== id);
   save();
   renderExpenses();
@@ -1338,6 +1123,13 @@ function toggleCustom(i) {
 
 // ── INIT ──
 load();
+renderTrip();
+if (API_URL) {
+  const cb = document.querySelector('.clear-btn');
+  cb.textContent = '🔄 重新整理';
+  cb.setAttribute('onclick', 'apiLoad()');
+  apiLoad();
+}
 renderMembers();
 renderExpenses();
 
