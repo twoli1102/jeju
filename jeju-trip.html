@@ -802,7 +802,7 @@ async function fetchWeather() {
     const geo = await fetch('https://geocoding-api.open-meteo.com/v1/search?name=Jeju&count=1&language=zh');
     const gd  = await geo.json();
     const { latitude: lat, longitude: lon } = gd.results[0];
-    const url = `https://script.google.com/macros/s/AKfycbx5jUkBogg5YWA8JHgDWiMU4W_fFtR7tx_hTCxXiP2RQHPopsdClxpwgKLtnzpxz5R0/exec`;
+    const url = `https://script.google.com/macros/s/AKfycbwjsT_iz70zK2I0XQR8xeT-Tolp_xSVBsGJaqyew_UfW4c3EKxwo1kfqtoL1x7aMunl/exec`;
     const res = await fetch(url);
     const d   = await res.json();
     const c   = d.current;
