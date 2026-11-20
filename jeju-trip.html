@@ -802,7 +802,7 @@ async function fetchWeather() {
     const geo = await fetch('https://geocoding-api.open-meteo.com/v1/search?name=Jeju&count=1&language=zh');
     const gd  = await geo.json();
     const { latitude: lat, longitude: lon } = gd.results[0];
-    const url = `https://script.google.com/macros/s/AKfycbwjsT_iz70zK2I0XQR8xeT-Tolp_xSVBsGJaqyew_UfW4c3EKxwo1kfqtoL1x7aMunl/exec`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,apparent_temperature&timezone=Asia%2FSeoul`;
     const res = await fetch(url);
     const d   = await res.json();
     const c   = d.current;
@@ -855,7 +855,7 @@ function updateRate() {
 
 // ── GOOGLE SHEETS 同步 ──
 // 把 Apps Script 部署後的網址（/exec 結尾）貼在下面引號內；留空則只存在這支手機（本機模式）
-const API_URL = '';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwjsT_iz70zK2I0XQR8xeT-Tolp_xSVBsGJaqyew_UfW4c3EKxwo1kfqtoL1x7aMunl/exec';
 
 function setSync(icon, msg, kind) {
   const bar = document.getElementById('sync-bar');
